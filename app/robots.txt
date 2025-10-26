@@ -1,0 +1,10 @@
+# Robots.txt for 361Degustation
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /checkout/
+
+Sitemap: https://361degustation.com/sitemap.xml
+
