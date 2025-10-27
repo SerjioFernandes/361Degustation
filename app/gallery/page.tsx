@@ -14,7 +14,7 @@ export default function GalleryPage() {
       category: 'Nigiri',
     },
     {
-      src: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&q=80',
+      src: 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=800&q=80',
       title: 'Dragon Roll Special',
       category: 'Maki',
     },
@@ -44,7 +44,7 @@ export default function GalleryPage() {
       category: 'Special',
     },
     {
-      src: 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=800&q=80',
+      src: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=800&q=80',
       title: 'Artisanal Sushi',
       category: 'Special',
     },

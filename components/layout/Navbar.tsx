@@ -6,6 +6,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useCartStore } from '@/store/cartStore';
 import { FiShoppingCart, FiUser, FiMenu, FiX } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import Logo from '@/components/Logo';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -43,12 +44,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="font-display text-2xl md:text-3xl font-bold">
-              <span className={isScrolled ? 'text-primary' : 'text-white'}>361</span>
-              <span className="text-accent-gold">Degustation</span>
-            </div>
-          </Link>
+          <Logo isScrolled={isScrolled} />
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">

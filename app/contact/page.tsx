@@ -6,12 +6,22 @@ import { FiMail, FiPhone, FiMapPin, FiClock, FiSend } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 
 export default function ContactPage() {
+  const [activeTab, setActiveTab] = useState<'contact' | 'reservation'>('contact');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     subject: '',
     message: '',
+  });
+  const [reservationData, setReservationData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    date: '',
+    time: '',
+    guests: '2',
+    specialRequests: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -28,6 +38,26 @@ export default function ContactPage() {
         phone: '',
         subject: '',
         message: '',
+      });
+      setIsSubmitting(false);
+    }, 1500);
+  };
+
+  const handleReservationSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Simulate reservation submission
+    setTimeout(() => {
+      toast.success('Reservation request sent! We\'ll confirm your booking via email.');
+      setReservationData({
+        name: '',
+        email: '',
+        phone: '',
+        date: '',
+        time: '',
+        guests: '2',
+        specialRequests: '',
       });
       setIsSubmitting(false);
     }, 1500);
@@ -115,10 +145,36 @@ export default function ContactPage() {
               transition={{ duration: 0.6 }}
               className="bg-white p-8 rounded-lg shadow-md"
             >
-              <h2 className="font-display text-3xl font-bold mb-6">
-                Send Us a <span className="text-accent-gold">Message</span>
-              </h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Tabs */}
+              <div className="flex gap-4 mb-6 border-b">
+                <button
+                  onClick={() => setActiveTab('contact')}
+                  className={`pb-3 px-4 font-semibold transition-colors ${
+                    activeTab === 'contact'
+                      ? 'border-b-2 border-accent-red text-accent-red'
+                      : 'text-gray-600 hover:text-accent-red'
+                  }`}
+                >
+                  Contact Us
+                </button>
+                <button
+                  onClick={() => setActiveTab('reservation')}
+                  className={`pb-3 px-4 font-semibold transition-colors ${
+                    activeTab === 'reservation'
+                      ? 'border-b-2 border-accent-red text-accent-red'
+                      : 'text-gray-600 hover:text-accent-red'
+                  }`}
+                >
+                  Make Reservation
+                </button>
+              </div>
+
+              {activeTab === 'contact' ? (
+                <>
+                  <h2 className="font-display text-3xl font-bold mb-6">
+                    Send Us a <span className="text-accent-gold">Message</span>
+                  </h2>
+                  <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Your Name *
@@ -198,6 +254,139 @@ export default function ContactPage() {
                   )}
                 </button>
               </form>
+                </>
+              ) : (
+                <>
+                  <h2 className="font-display text-3xl font-bold mb-6">
+                    Book a <span className="text-accent-gold">Table</span>
+                  </h2>
+                  <form onSubmit={handleReservationSubmit} className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Your Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={reservationData.name}
+                        onChange={(e) => setReservationData({ ...reservationData, name: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent-red focus:border-accent-red"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Email *
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          value={reservationData.email}
+                          onChange={(e) => setReservationData({ ...reservationData, email: e.target.value })}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent-red focus:border-accent-red"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Phone *
+                        </label>
+                        <input
+                          type="tel"
+                          required
+                          value={reservationData.phone}
+                          onChange={(e) => setReservationData({ ...reservationData, phone: e.target.value })}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent-red focus:border-accent-red"
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Date *
+                        </label>
+                        <input
+                          type="date"
+                          required
+                          value={reservationData.date}
+                          onChange={(e) => setReservationData({ ...reservationData, date: e.target.value })}
+                          min={new Date().toISOString().split('T')[0]}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent-red focus:border-accent-red"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Time *
+                        </label>
+                        <select
+                          required
+                          value={reservationData.time}
+                          onChange={(e) => setReservationData({ ...reservationData, time: e.target.value })}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent-red focus:border-accent-red"
+                        >
+                          <option value="">Select time</option>
+                          <option value="11:00">11:00 AM</option>
+                          <option value="11:30">11:30 AM</option>
+                          <option value="12:00">12:00 PM</option>
+                          <option value="12:30">12:30 PM</option>
+                          <option value="13:00">1:00 PM</option>
+                          <option value="13:30">1:30 PM</option>
+                          <option value="18:00">6:00 PM</option>
+                          <option value="18:30">6:30 PM</option>
+                          <option value="19:00">7:00 PM</option>
+                          <option value="19:30">7:30 PM</option>
+                          <option value="20:00">8:00 PM</option>
+                          <option value="20:30">8:30 PM</option>
+                          <option value="21:00">9:00 PM</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Number of Guests *
+                      </label>
+                      <select
+                        required
+                        value={reservationData.guests}
+                        onChange={(e) => setReservationData({ ...reservationData, guests: e.target.value })}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent-red focus:border-accent-red"
+                      >
+                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                          <option key={num} value={num}>{num} {num === 1 ? 'Guest' : 'Guests'}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Special Requests
+                      </label>
+                      <textarea
+                        rows={3}
+                        value={reservationData.specialRequests}
+                        onChange={(e) => setReservationData({ ...reservationData, specialRequests: e.target.value })}
+                        placeholder="Allergies, dietary restrictions, special occasions..."
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent-red focus:border-accent-red"
+                      />
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full btn-primary flex items-center justify-center disabled:opacity-50"
+                    >
+                      {isSubmitting ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                          Submitting...
+                        </>
+                      ) : (
+                        <>
+                          <FiSend className="mr-2" />
+                          Request Reservation
+                        </>
+                      )}
+                    </button>
+                  </form>
+                </>
+              )}
             </motion.div>
 
             {/* Map */}

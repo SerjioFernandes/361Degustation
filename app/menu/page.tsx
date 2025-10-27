@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCartStore } from '@/store/cartStore';
 import toast from 'react-hot-toast';
-import { FiShoppingCart, FiStar, FiInfo } from 'react-icons/fi';
+import { FiShoppingCart, FiStar, FiInfo, FiSearch } from 'react-icons/fi';
 
 interface Product {
   _id: string;
@@ -24,6 +24,8 @@ export default function MenuPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showVegetarianOnly, setShowVegetarianOnly] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const addItem = useCartStore((state) => state.addItem);
@@ -44,14 +46,29 @@ export default function MenuPage() {
   }, []);
 
   useEffect(() => {
-    if (selectedCategory === 'all') {
-      setFilteredProducts(products);
-    } else {
-      setFilteredProducts(
-        products.filter((product) => product.category === selectedCategory)
+    let filtered = products;
+
+    // Filter by category
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter((product) => product.category === selectedCategory);
+    }
+
+    // Filter by search query
+    if (searchQuery) {
+      filtered = filtered.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.ingredients.some((ing) => ing.toLowerCase().includes(searchQuery.toLowerCase()))
       );
     }
-  }, [selectedCategory, products]);
+
+    // Filter by vegetarian
+    if (showVegetarianOnly) {
+      filtered = filtered.filter((product) => product.isVegetarian);
+    }
+
+    setFilteredProducts(filtered);
+  }, [selectedCategory, searchQuery, showVegetarianOnly, products]);
 
   const fetchProducts = async () => {
     try {
@@ -109,6 +126,42 @@ export default function MenuPage() {
               Explore our carefully curated selection of premium sushi and Japanese delicacies
             </p>
           </motion.div>
+        </div>
+      </div>
+
+      {/* Search and Filters */}
+      <div className="bg-white border-b py-6">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+            {/* Search Bar */}
+            <div className="relative flex-1 max-w-md w-full">
+              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Search menu items, ingredients..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-full focus:border-accent-gold focus:outline-none transition-colors"
+              />
+            </div>
+
+            {/* Vegetarian Filter */}
+            <button
+              onClick={() => setShowVegetarianOnly(!showVegetarianOnly)}
+              className={`px-6 py-3 rounded-full font-semibold transition-all flex items-center gap-2 ${
+                showVegetarianOnly
+                  ? 'bg-green-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              🌱 Vegetarian Only
+            </button>
+
+            {/* Results Count */}
+            <div className="text-gray-600 font-medium">
+              {filteredProducts.length} {filteredProducts.length === 1 ? 'item' : 'items'}
+            </div>
+          </div>
         </div>
       </div>
 

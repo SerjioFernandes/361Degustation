@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { FiFacebook, FiInstagram, FiTwitter, FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
+import { FiFacebook, FiInstagram, FiTwitter, FiMail, FiPhone, FiMapPin, FiYoutube } from 'react-icons/fi';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -20,14 +20,17 @@ export default function Footer() {
               Beyond perfection. Experience the art of premium sushi crafted with precision and passion.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="hover:text-accent-gold transition-colors">
+              <a href="https://facebook.com/361degustation" target="_blank" rel="noopener noreferrer" className="hover:text-accent-gold transition-colors" aria-label="Facebook">
                 <FiFacebook size={20} />
               </a>
-              <a href="#" className="hover:text-accent-gold transition-colors">
+              <a href="https://instagram.com/361degustation" target="_blank" rel="noopener noreferrer" className="hover:text-accent-gold transition-colors" aria-label="Instagram">
                 <FiInstagram size={20} />
               </a>
-              <a href="#" className="hover:text-accent-gold transition-colors">
+              <a href="https://twitter.com/361degustation" target="_blank" rel="noopener noreferrer" className="hover:text-accent-gold transition-colors" aria-label="Twitter">
                 <FiTwitter size={20} />
+              </a>
+              <a href="https://youtube.com/@361degustation" target="_blank" rel="noopener noreferrer" className="hover:text-accent-gold transition-colors" aria-label="YouTube">
+                <FiYoutube size={20} />
               </a>
             </div>
           </div>

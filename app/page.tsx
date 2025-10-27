@@ -174,7 +174,7 @@ export default function HomePage() {
             {[
               {
                 name: 'Dragon Roll',
-                image: 'https://images.unsplash.com/photo-1617196035752-4d038f12eac0?w=500&q=80',
+                image: 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=500&q=80',
                 price: 24.99,
               },
               {
